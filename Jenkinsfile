@@ -22,9 +22,25 @@ pipeline {
     }
     post {
         success {
-            mail to: 'navsimransingh786@gmail.com',
-                 subject: "Succeed Pipeline: ${currentBuild.fullDisplayName}",
-                 body: "Something is wrong with ${env.BUILD_URL}"
+            emailext(
+                subject: "Success: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """<p>Build successful!</p>
+                        <p>Check console output at <a href='${env.BUILD_URL}'>${env.BUILD_URL}</a></p>""",
+                to: 'navsimransingh786@gmail.com',
+                cc: '',
+                bcc: '',
+                mimeType: 'text/html'
+            )
+        }
+        failure {
+            emailext(
+                subject: "Failure: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """<p>Build failed. Please check console output at <a href='${env.BUILD_URL}'>${env.BUILD_URL}</a></p>""",
+                to: 'navsimransingh786@gmail.com',
+                cc: '',
+                bcc: '',
+                mimeType: 'text/html'
+            )
         }
     }
 }
