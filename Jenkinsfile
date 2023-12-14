@@ -19,6 +19,13 @@ pipeline {
                 echo 'Deploying'
             }
         }
+        post {
+    success {
+        mail to: 'navsimransingh786@gmail.com',
+             subject: "Succeed Pipeline: ${currentBuild.fullDisplayName}",
+             body: "Something is wrong with ${env.BUILD_URL}"
+    }
+}
     }
     post {
         success {
